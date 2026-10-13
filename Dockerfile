@@ -1,4 +1,4 @@
-```dockerfile
+dockerfile
 FROM php:8.2-apache
 
 # Enable only one Apache MPM
@@ -15,4 +15,4 @@ COPY . /var/www/html/
 RUN a2enmod rewrite
 
 EXPOSE 80
-```
+
