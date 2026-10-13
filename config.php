@@ -1,13 +1,19 @@
-```php
+
 <?php
 
 mysqli_report(MYSQLI_REPORT_OFF);
 
-$host = getenv('MYSQLHOST') ?: 'localhost';
-$user = getenv('MYSQLUSER') ?: 'root';
-$password = getenv('MYSQLPASSWORD') ?: '';
-$database = getenv('MYSQLDATABASE') ?: 'netmart';
-$port = (int)(getenv('MYSQLPORT') ?: 3306);
+$host = getenv('MYSQLHOST');
+$user = getenv('MYSQLUSER');
+$password = getenv('MYSQLPASSWORD');
+$database = getenv('MYSQLDATABASE');
+$port = (int) (getenv('MYSQLPORT') ?: 3306);
+
+if (!$host || !$user || !$database || !$password) {
+    error_log('Railway MySQL environment variables are missing.');
+    http_response_code(500);
+    exit('Database configuration is missing.');
+}
 
 $conn = new mysqli(
     $host,
@@ -24,6 +30,5 @@ if ($conn->connect_error) {
 }
 
 $conn->set_charset('utf8mb4');
-
 ?>
 ```
