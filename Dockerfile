@@ -1,11 +1,9 @@
 
 FROM php:8.2-apache
 
-RUN for module in mpm_event mpm_worker mpm_prefork; do \
-      a2dismod "$module" 2>/dev/null || true; \
-    done \
-    && a2enmod mpm_prefork \
-    && apache2ctl -M
+RUN echo "=== Apache MPM configuration ===" \
+    && grep -RniE '^[[:space:]]*LoadModule[[:space:]]+mpm_' /etc/apache2 \
+    && echo "=== End MPM configuration ==="
 
 RUN docker-php-ext-install mysqli pdo pdo_mysql
 
