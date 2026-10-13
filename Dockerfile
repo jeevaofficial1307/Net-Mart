@@ -1,11 +1,11 @@
 
 FROM php:8.2-apache
 
-RUN echo "=== Apache MPM configuration ===" \
-    && grep -RniE '^[[:space:]]*LoadModule[[:space:]]+mpm_' /etc/apache2 \
-    && echo "=== End MPM configuration ==="
+RUN sed -i '/^[[:space:]]*LoadModule mpm_/d' /etc/apache2/apache2.conf \
+    && a2dismod mpm_event mpm_worker mpm_prefork 2>/dev/null || true
 
-RUN docker-php-ext-install mysqli pdo pdo_mysql
+RUN a2enmod mpm_prefork \
+    && docker-php-ext-install mysqli pdo pdo_mysql
 
 COPY . /var/www/html/
 
