@@ -1,10 +1,13 @@
-
+```php
 <?php
-$host = getenv('DB_HOST') ?: 'localhost';
-$user = getenv('DB_USERNAME') ?: 'root';
-$password = getenv('DB_PASSWORD') ?: '';
-$database = getenv('DB_NAME') ?: 'netmart';
-$port = (int)(getenv('DB_PORT') ?: 3306);
+
+mysqli_report(MYSQLI_REPORT_OFF);
+
+$host = getenv('MYSQLHOST') ?: 'localhost';
+$user = getenv('MYSQLUSER') ?: 'root';
+$password = getenv('MYSQLPASSWORD') ?: '';
+$database = getenv('MYSQLDATABASE') ?: 'netmart';
+$port = (int)(getenv('MYSQLPORT') ?: 3306);
 
 $conn = new mysqli(
     $host,
@@ -15,8 +18,12 @@ $conn = new mysqli(
 );
 
 if ($conn->connect_error) {
-    die("Database connection failed.");
+    error_log('MySQL connection failed: ' . $conn->connect_error);
+    http_response_code(500);
+    exit('Database connection failed.');
 }
 
-$conn->set_charset("utf8mb4");
+$conn->set_charset('utf8mb4');
+
 ?>
+```
